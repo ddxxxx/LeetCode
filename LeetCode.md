@@ -1,0 +1,453 @@
+# LeetCode
+
+## 十一. 二分查找
+
+### 二分查找应用(简单)
+
+#### [374. 猜数字大小](https://leetcode.cn/problems/guess-number-higher-or-lower/)(ac)
+
+~~~c++
+class Solution {
+public:
+    int guessNumber(int n) {
+        int l = 1, r = n;
+        while(l < r)
+        {
+            int mid = (long long) l + r >> 1;
+            if(guess(mid) <=0 ){
+                r = mid;
+            }else{
+                l = mid + 1;
+            }
+            
+
+        }
+        return l;
+    }
+};
+~~~
+
+
+
+#### [35. 搜索插入位置](https://leetcode.cn/problems/search-insert-position/)(ac)
+
+~~~c++
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        int l = 0 ,r = nums.size()-1;
+        while(l < r){
+            int mid = l + r >> 1;
+            if(nums[mid] >= target) r = mid;
+            else l = mid+1;
+        }
+        if(nums[l] <  target) return l + 1;
+        else return l;
+    }
+};
+~~~
+
+
+
+#### [278. 第一个错误的版本](https://leetcode.cn/problems/first-bad-version/)(ac)
+
+~~~C++
+class Solution {
+public:
+    int firstBadVersion(int n) {
+        int l =0, r=n;
+        while(l < r){
+            int mid = l + (r-l)/2;
+            if(isBadVersion(mid)) r = mid;
+            else l = mid + 1;
+        }
+        return l;
+    }
+};
+~~~
+
+
+
+#### [367. 有效的完全平方数](https://leetcode.cn/problems/valid-perfect-square/)(ac)
+
+~~~c++
+class Solution {
+public:
+    bool isPerfectSquare(int num) {
+        int l = 1, r = num;
+        while(l < r)
+        {
+            int mid = (l + 1ll + r) >> 1;
+            if(mid <= num/mid) l = mid;
+            else r = mid - 1;
+        }
+        return r*r == num;
+    }
+};
+~~~
+
+
+
+#### [69. x 的平方根 ](https://leetcode.cn/problems/sqrtx/)(ac)
+
+~~~c++
+class Solution {
+public:
+    int mySqrt(int x) {
+        int l = 0 , r = x;
+        while(l < r){
+            int mid = l + (r - l) /2 + 1;
+            if(mid <= x/mid ) l = mid;
+            else r = mid - 1;
+        }
+        return r;
+    }
+};
+~~~
+
+
+
+#### [441. 排列硬币](https://leetcode.cn/problems/arranging-coins/)(ac)
+
+~~~c++
+class Solution {
+public:
+    int arrangeCoins(int n) {
+        long l = 1, r = n;
+        
+        while(l < r){
+            long mid = l + r + 1 >> 1;
+            if(((1+mid)*mid >> 1 ) < n) l = mid;
+            else if ((1+mid)*mid >> 1 == n ) return mid;
+            else r = mid -1;
+        }
+        return l;
+    }
+};
+~~~
+
+
+
+### 二分查找应用(中等)
+
+#### [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)(ac)
+
+~~~c++
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        if(nums.empty()) return {-1,-1};
+        int l = 0 ,r = nums.size()-1;
+        
+        while(l < r){
+            int mid = l + r >> 1;
+            if(nums[mid] >= target) r = mid;
+            else l = mid+1;
+        }
+        int L = l;
+        l = 0 ,r = nums.size()-1;
+        while(l < r){
+            int mid = l + r + 1 >> 1;
+            if(nums[mid] <= target) l = mid;
+            else r = mid - 1;
+        }
+        int R = r;
+        if(nums[L] != target){
+            L = -1;
+        }
+        if(nums[R] != target){
+            R = -1;
+        }
+        return vector<int> {L,R};
+        cout << L << ' ' << R;
+    }
+};
+~~~
+
+
+
+#### [540. 有序数组中的单一元素](https://leetcode.cn/problems/single-element-in-a-sorted-array/)(ac)
+
+~~~c++
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        nums.push_back(nums.back()+1);
+        // 将数组按对分组
+        //对组号二分
+        int l = 0, r= nums.size() /2 -1;
+        while(l<r){
+            int mid = l + r >> 1;
+            if(nums[mid*2] != nums[mid*2+1]) r = mid;
+            else l = mid + 1;
+        }
+        return nums[l*2];
+    }
+};
+~~~
+
+
+
+#### [275. H 指数 II](https://leetcode.cn/problems/h-index-ii/)[436](https://leetcode.cn/problems/find-right-interval/)
+
+#### [300. 最长递增子序列](https://leetcode.cn/problems/longest-increasing-subsequence/)
+
+#### [354. 俄罗斯套娃信封问题](https://leetcode.cn/problems/russian-doll-envelopes/)
+
+#### [658. 找到 K 个最接近的元素](https://leetcode.cn/problems/find-k-closest-elements/)（ac)
+
+~~~c++
+// 堆
+class Solution {
+public:
+    vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+        priority_queue<pair<int,int>> q;
+        for(auto a:arr){
+            q.push({abs(a-x),a});
+            if(q.size() > k){
+                q.pop();
+            }
+        }
+        vector<int> res;
+        while(q.size()){
+            res.push_back(q.top().second);
+            q.pop();
+        }
+        sort(res.begin(),res.end());
+        return res;
+    }
+};
+
+//
+class Solution {
+public:
+    vector<int> findClosestElements(vector<int>& arr, int k, int T) {
+        int l = 0, r = arr.size() - 1;
+        while(l < r){
+            int mid = l + r >> 1;
+            if(arr[mid] >=T) r = mid;
+            else l = mid + 1;
+        }
+        if(r){
+            int x = arr[r-1], y = arr[r];
+            if(make_pair(abs(x-T),x) < make_pair(abs(y-T),y)){
+                r--;
+            }
+        }
+
+        int i = r , j = r;
+        for(int u = 0; u < k-1;u++){
+            if(i-1 < 0) j++;
+            else if (j + 1 >= arr.size()) i--;
+            else{
+                int x = arr[i-1],y = arr[j+1];
+                if(make_pair(abs(x-T),x) < make_pair(abs(y-T),y)){
+                    i--;
+                }else{
+                    j++;
+                }
+            }
+        }
+        vector<int> res;
+        for(int u = i; u <=j; u++){
+            res.push_back(arr[u]);
+        }
+        return res;
+    }
+};
+~~~
+
+#### [162. 寻找峰值](https://leetcode.cn/problems/find-peak-element/)(ac)
+
+~~~c++
+//寻找下落点
+class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        int l = 0, r = nums.size() - 1;
+        while(l < r ){
+            int mid = l + r >> 1;
+            if(nums[mid] > nums[mid + 1]) r = mid;
+            else l = mid + 1; 
+        }
+        return l;
+    }
+};
+~~~
+
+
+
+[4](https://leetcode.cn/problems/median-of-two-sorted-arrays/)
+
+### 二分查找与旋转数组
+
+#### [153. 寻找旋转排序数组中的最小值](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/)(ac)
+
+~~~c++
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int l = 0, r= nums.size() - 1;
+        while(l < r){
+            int mid = l + r + 1 >> 1;
+            if(nums[mid] >=nums[0]) l = mid;
+            else r = mid - 1;
+        }
+        if(r == nums.size()-1){
+            return  nums[0];
+        }else{
+            return nums[r+1];
+        }
+    }
+};
+~~~
+
+
+
+#### [154. 寻找旋转排序数组中的最小值 II](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array-ii/)(ac)
+
+~~~c++
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int l = 0, r = nums.size() - 1;
+        //去掉右边可能与左边重复数
+        while(l < r &&nums[0] == nums[r]) r--;
+        while(l<r){
+            int mid = l + r + 1>> 1;
+            if(nums[mid] >= nums[0]) l = mid;
+            else r = mid - 1;
+        }
+        if(r < nums.size() - 1){
+            return nums[r + 1];
+        }else {
+            return nums[0];
+        }
+    }
+};
+~~~
+
+
+
+#### [33. 搜索旋转排序数组](https://leetcode.cn/problems/search-in-rotated-sorted-array/)(ac)
+
+~~~c++
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int l = 0, r = nums.size() - 1;
+            while (l < r) {
+                int mid = (l + r + 1) >> 1;
+                if (nums[mid] >= nums[0]) l = mid;
+                else r = mid - 1;
+            }
+
+            if (target >= nums[0]) {
+                l = 0;
+            } else {
+                l = r + 1, r = nums.size() - 1;
+            }
+            while (l < r) {
+                int mid = (l + r )>> 1;
+                if (nums[mid] >= target) {
+                    r = mid;
+                } else {
+                    l = mid + 1;
+                }
+            }
+
+            if (nums[r] == target) return r;
+            return -1;
+    }
+};
+~~~
+
+
+
+#### [81. 搜索旋转排序数组 II](https://leetcode.cn/problems/search-in-rotated-sorted-array-ii/)(ac)
+
+~~~c++
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        int l = 0, r = nums.size()-1;
+        while(l < r&& nums[r] == nums[0]) r--;
+        int R = r;
+        while(l < r){
+            int mid = l + r  + 1 >> 1;
+            if(nums[mid] >= nums[0]) l = mid;
+            else r = mid - 1;
+        }
+        if(target >= nums[0]){
+            l = 0;
+        }else{
+            l = r + 1, r = R;
+        }
+
+        while(l < r){
+            int mid = l + r >> 1;
+            if(nums[mid] >=target) r = mid;
+            else l = mid + 1;
+        }
+        if(nums[r]  == target) return true;
+        else return false;
+    }
+};
+~~~
+
+
+
+### 二分查找与矩阵
+
+#### [74. 搜索二维矩阵](https://leetcode.cn/problems/search-a-2d-matrix/)(ac)
+
+~~~c++
+//按行展开后就是升序序列，二分即可
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        if(matrix.empty() || matrix[0].empty()) return false;
+        int n = matrix.size(), m = matrix[0].size();
+        int l = 0, r = n*m - 1;
+        while(l < r)
+        {
+            int mid = l + r >> 1;
+            if(matrix[mid/m][mid%m] >= target) r = mid;
+            else l = mid + 1;
+        }
+        return matrix[l/m][l%m] == target;
+
+    }
+};
+~~~
+
+
+
+#### [240. 搜索二维矩阵 II](https://leetcode.cn/problems/search-a-2d-matrix-ii/)(ac)
+
+~~~c++
+//对每一行二分，lower_bound：大于等于x的第一个数
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        for(const auto& row :matrix){
+            auto it = lower_bound(row.begin(),row.end(),target);
+            if(it != row.end() && *it == target) {
+                return true;
+            }
+        }
+        return false;
+    }
+};
+~~~
+
+
+
+### 二分答案法
+
+[ 378](https://leetcode.cn/problems/kth-smallest-element-in-a-sorted-matrix/)
+[668](https://leetcode.cn/problems/kth-smallest-number-in-multiplication-table/)
+[410](https://leetcode.cn/problems/split-array-largest-sum/)
+[483](https://leetcode.cn/problems/smallest-good-base/)
+
+#### [719. 找出第 K 小的数对距离](https://leetcode.cn/problems/find-k-th-smallest-pair-distance/)
