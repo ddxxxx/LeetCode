@@ -4,7 +4,7 @@
 
 ### 头尾指针
 
-#### [345. 反转字符串中的元音字母](https://leetcode.cn/problems/reverse-vowels-of-a-string/)
+#### [345. 反转字符串中的元音字母](https://leetcode.cn/problems/reverse-vowels-of-a-string/)（ac)
 
 ~~~c++
 class Solution {
@@ -29,7 +29,7 @@ string reverseVowels(string str) {
 
 
 
-#### [680. 验证回文字符串 Ⅱ](https://leetcode.cn/problems/valid-palindrome-ii/)
+#### [680. 验证回文字符串 Ⅱ](https://leetcode.cn/problems/valid-palindrome-ii/)(ac)
 
 ~~~c++
 class Solution {
@@ -56,7 +56,7 @@ public:
 
 
 
-#### [15. 三数之和](https://leetcode.cn/problems/3sum/)
+#### [15. 三数之和](https://leetcode.cn/problems/3sum/)(ac)
 
 ~~~c++
 class Solution {
@@ -83,7 +83,7 @@ public:
 
 
 
-#### [16. 最接近的三数之和](https://leetcode.cn/problems/3sum-closest/)
+#### [16. 最接近的三数之和](https://leetcode.cn/problems/3sum-closest/)(Ac)
 
 ~~~c++
 class Solution {
@@ -111,7 +111,7 @@ public:
 
 
 
-#### [18. 四数之和](https://leetcode.cn/problems/4sum/)
+#### [18. 四数之和](https://leetcode.cn/problems/4sum/)(ac)
 
 ~~~c++
 class Solution {
@@ -141,7 +141,7 @@ public:
 
 
 
-#### [11. 盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/)
+#### [11. 盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/)(ac)
 
 ~~~c++
 class Solution {
@@ -165,7 +165,7 @@ public:
 
 ### 同向双指针、滑动窗口
 
-#### [27. 移除元素](https://leetcode.cn/problems/remove-element/)
+#### [27. 移除元素](https://leetcode.cn/problems/remove-element/)(ac)
 
 ~~~c+
 class Solution {
@@ -184,7 +184,7 @@ public:
 
 
 
-#### [26. 删除有序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/)
+#### [26. 删除有序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/)(ac)
 
 ~~~c++
 class Solution {
@@ -197,6 +197,350 @@ public:
             nums[++k] = nums[i];
         }
         return k + 1;
+    }
+};
+~~~
+
+
+
+#### [80. 删除有序数组中的重复项 II](https://leetcode.cn/problems/remove-duplicates-from-sorted-array-ii/)(ac)
+
+~~~C++
+//我们定义一个指针 kk，表示新数组的末尾，然后从前往后扫描原数组，如果当前数不等于 nums[k]nums[k] 且不等于 nums[k−1]nums[k−1]，则将当前数插入新数组的末尾。
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if(nums.size() < 3) return nums.size();
+        int k = 1;
+        for (int i = 2; i < nums.size(); i++) {
+            if(nums[i] != nums[k-1]){
+                nums[++k] = nums[i];
+            }
+        }
+        k++;
+        return k;
+    }
+};
+~~~
+
+
+
+#### [83. 删除排序链表中的重复元素](https://leetcode.cn/problems/remove-duplicates-from-sorted-list/)(ac)
+
+~~~c++
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(!head) return head;
+        auto p = head;
+        while(p->next){
+            if(p->val == p->next->val) p->next = p->next->next;
+            else p = p->next;
+        }
+        return head;
+    }
+};
+~~~
+
+
+
+#### [82. 删除排序链表中的重复元素 II](https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/)(ac)
+
+~~~c++
+
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode* p = dummy;
+        while (p->next)
+        {
+            ListNode* q = p->next;
+            while (q && q->val == p->next->val)
+                q = q->next;
+            if (p->next->next == q) p = p->next;
+            else p->next = q;
+        }
+        return dummy->next;
+    }
+};
+~~~
+
+
+
+#### [187. 重复的DNA序列](https://leetcode.cn/problems/repeated-dna-sequences/)(ac)
+
+~~~c++
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        unordered_map<string,int> hash;
+        vector<string> res;
+        for(int i = 0; i+10 <= s.size();i++){
+            hash[s.substr(i,10)]++;
+        }
+
+        for(auto x:hash){
+            if(x.second > 1){
+                res.push_back(x.first);
+            }
+        }
+
+        return res;
+    }
+};
+~~~
+
+
+
+#### [611. 有效三角形的个数](https://leetcode.cn/problems/valid-triangle-number/)(ac)
+
+~~~c++
+class Solution {
+public:
+    int triangleNumber(vector<int> &nums) {
+        int res = 0;
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size(); ++i) {
+            for (int j = i - 1, k = 0; j > 0 && k < j; j--) {
+                while (k < j && nums[k] + nums[j] <= nums[i]) k++;
+                res += j - k;
+            }
+        }
+        return res;
+    }
+};
+~~~
+
+
+
+#### [674. 最长连续递增序列](https://leetcode.cn/problems/longest-continuous-increasing-subsequence/)(ac)
+
+~~~c++
+// 双指针
+class Solution {
+public:
+    int findLengthOfLCIS(vector<int>& nums) {
+        int res = 0;
+        for(int i = 0; i < nums.size(); i++){
+            int j = i + 1;
+            while(j < nums.size() && nums[j] > nums[j-1]) {
+                j++;
+            }
+            res = max(res,j - i);
+        }
+        return res;
+    }
+};
+
+
+// 单调栈
+class Solution {
+public:
+    int findLengthOfLCIS(vector<int>& nums) {
+        int res = 0;
+        stack<int> stk;
+        for( int i = 0; i < nums.size(); i++ ) {
+            while(stk.size() && stk.top() >= nums[i]){
+                while(stk.size()){
+                    stk.pop();
+                }
+            }
+            stk.push(nums[i]);
+            res = max(res,(int)stk.size());
+        }
+        return res;
+    }
+};
+~~~
+
+
+
+#### [643. 子数组最大平均数 I](https://leetcode.cn/problems/maximum-average-subarray-i/)(ac)
+
+~~~c++
+class Solution {
+public:
+    double findMaxAverage(vector<int> &nums, int k) {
+        double res = -1e5;
+        for (int i = 0, sum = 0, j = 0; i < nums.size(); i++) {
+            sum += nums[i];
+            while (i - j + 1 > k) {
+                sum -= nums[j++];
+            }
+            if (i >= k - 1) res = max(res, sum / (double) k);
+        }
+        return res;
+    }
+};
+~~~
+
+
+
+#### [209. 长度最小的子数组](https://leetcode.cn/problems/minimum-size-subarray-sum/)(ac)
+
+~~~ c++
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int res = INT_MAX;
+        for (int i = 0, sum = 0, j = 0; i < nums.size(); i++) {
+            sum += nums[i];
+            while(sum - nums[j] >= target) sum -= nums[j++];
+            if(sum>=target) res = min(res,i-j+1);
+        }
+        if (res == INT_MAX) res = 0;
+        return res;
+    }
+};
+~~~
+
+
+
+#### [3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)(ac)
+
+~~~c++
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int res = 0;
+        unordered_map<char,int> cnt;
+        for(int i = 0, j = 0; i <s.size(); i++){
+            cnt[s[i]]++;
+            while(cnt[s[i]] > 1){
+                cnt[s[j]]--;
+                j++;
+            }
+            res = max(res,i-j+1);
+        }
+        return res;
+    }
+};
+~~~
+
+
+
+#### [438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/)(ac)
+
+~~~c++
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        vector<int> res;
+        unordered_map<char,int> cnt;
+        for(auto x:p){
+            cnt[x] ++;
+        }
+
+        int tot = cnt.size();
+
+        for(int i = 0, j = 0, satisify = 0; i < s.size(); i++){
+            if(--cnt[s[i]] == 0) satisify ++;
+            while(i-j+1 > p.size()){
+                // 若删之前j字符满足要求，删除之后就不满足要求
+                if(cnt[s[j]] == 0){
+                    satisify--;
+                }
+                cnt[s[j++]]++;
+            }
+            if(satisify == tot) res.push_back(j);
+        }
+        return res;
+    }
+};
+~~~
+
+
+
+#### [567. 字符串的排列](https://leetcode.cn/problems/permutation-in-string/)(ac)
+
+~~~c++
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        unordered_map<char,int> cnt;
+        for(auto c : s1){
+            cnt[c] ++;
+        }
+        int tot = cnt.size();
+
+        for(int i = 0, j = 0, satisfy = 0; i < s2.size(); i++){
+            if(--cnt[s2[i]] == 0) satisfy++;
+            while(i - j + 1 > s1.size()){
+                if(cnt[s2[j]] == 0){
+                    satisfy --;
+                }
+                cnt[s2[j++]] ++;
+            }
+
+            if(satisfy == tot) return true;
+        }
+
+        return false;
+    }
+};
+~~~
+
+
+
+#### [424. 替换后的最长重复字符](https://leetcode.cn/problems/longest-repeating-character-replacement/)(ac)
+
+~~~c++
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        int res = 0;
+        for (char c = 'A'; c <= 'Z'; c ++){
+            int cnt = 0;
+            // 对于当前字符c，求出滑动窗口内和c相同字符的个数cnt
+            // 当滑动窗口大小减去cnt > k时
+            // 更新滑动窗口
+            for (int i = 0, j = 0; i < s.size(); i++) {
+                if(s[i] == c) cnt ++;
+                while (i - j + 1 - cnt > k)
+                {
+                    // s[j] == c 时，删除s[j],则cnt就要减少
+                    if(s[j] == c) cnt--;
+                    j++;
+                }
+                res = max(res,i-j+1);
+            }
+        }
+        return res;
+    }
+};
+~~~
+
+
+
+### 分段双指针
+
+#### [86. 分隔链表](https://leetcode.cn/problems/partition-list/)(ac)
+
+~~~c++
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        ListNode *before = new ListNode(0);
+        ListNode *after = new ListNode(0);
+        ListNode *pb = before, *pa = after;
+
+        for (ListNode *p = head; p; p = p->next){
+            if (p->val < x)
+            {
+                pb->next = p;
+                pb = p;
+            }
+            else
+            {
+                pa->next = p;
+                pa = p;
+            }
+        }
+        pb->next = after->next;
+        pa->next = nullptr;
+        return before->next;
     }
 };
 ~~~
@@ -244,6 +588,8 @@ public:
 
 };
 ~~~
+
+
 
 
 
@@ -324,7 +670,111 @@ public:
 
 ### 广度优先搜索
 
-[133](https://leetcode.cn/problems/clone-graph/)、[200](https://leetcode.cn/problems/number-of-islands/)、[695](https://leetcode.cn/problems/max-area-of-island/)、[463](https://leetcode.cn/problems/island-perimeter/)、[542](https://leetcode.cn/problems/01-matrix/)、[130](https://leetcode.cn/problems/surrounded-regions/)、[417](https://leetcode.cn/problems/pacific-atlantic-water-flow/)、[529](https://leetcode.cn/problems/minesweeper/)、[127](https://leetcode.cn/problems/word-ladder/)、[126](https://leetcode.cn/problems/word-ladder-ii/)、[433](https://leetcode.cn/problems/minimum-genetic-mutation/)、[675](https://leetcode.cn/problems/cut-off-trees-for-golf-event/)
+[133](https://leetcode.cn/problems/clone-graph/)、[695](https://leetcode.cn/problems/max-area-of-island/)、[463](https://leetcode.cn/problems/island-perimeter/)、[542](https://leetcode.cn/problems/01-matrix/)、[130](https://leetcode.cn/problems/surrounded-regions/)、[417](https://leetcode.cn/problems/pacific-atlantic-water-flow/)、[529](https://leetcode.cn/problems/minesweeper/)、[127](https://leetcode.cn/problems/word-ladder/)、[126](https://leetcode.cn/problems/word-ladder-ii/)、[433](https://leetcode.cn/problems/minimum-genetic-mutation/)、[675](https://leetcode.cn/problems/cut-off-trees-for-golf-event/)
+
+#### [200. 岛屿数量](https://leetcode.cn/problems/number-of-islands/)
+
+~~~c++
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int cnt = 0;
+        int n = grid.size(), m = grid[0].size();
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(grid[i][j] == '1'){
+                    cnt++;
+                    bfs(i,j,grid);
+                }
+            }
+        }
+        return cnt;
+    }
+
+    void bfs(int i, int j, vector<vector<char>>& grid){
+        int n = grid.size(), m = grid[0].size();
+        int dx[4] = {0,-1,0,1}, dy[4] = {-1,0,1,0};
+        grid[i][j] = '0';
+        queue<pair<int,int>> q;
+        q.push({i,j});
+        while(q.size()){
+            auto t = q.front();
+            q.pop();
+            int x = t.first, y = t.second;
+            for(int i = 0; i < 4; i++){
+                int a = x + dx[i], b = y + dy[i];
+                if(a >= 0 && a < n && b >=0 && b < m && grid[a][b] == '1'){
+                    grid[a][b] = '0';
+                    q.push({a,b});
+                }
+            }
+        }
+    }
+};
+~~~
+
+
+
+#### [130. 被围绕的区域](https://leetcode.cn/problems/surrounded-regions/)
+
+~~~c++
+class Solution {
+public:
+    vector<vector<bool>> st;
+    void solve(vector<vector<char>>& board) {
+        int n = board.size(),m = board[0].size();
+        
+        for(int i = 0; i < n; i++){
+            vector<bool> tmp;
+            for(int j = 0; j < m; j++ ){
+                tmp.push_back(false);
+            }
+            st.push_back(tmp);
+        }
+
+        for(int i = 0;i < n;i++){
+            if(board[i][0] == 'O') bfs(i,0,board);
+            if(board[i][m-1] == 'O') bfs(i,m-1,board);
+        }
+
+        for(int i = 0; i < m; i++){
+
+            if(board[0][i] == 'O') bfs(0,i,board);
+            if(board[n-1][i] == 'O') bfs(n-1,i,board);
+        }
+        
+        for(int i= 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(st[i][j] == false){
+                    board[i][j] = 'X';
+                }
+            }
+        }
+    }
+
+    void bfs(int i, int j, vector<vector<char>>& board){
+        int n = board.size(),m = board[0].size();
+        st[i][j] = true;
+        int dx[4] = {-1,0,1,0},dy[4] = {0,1,0,-1};
+        queue<pair<int,int>> q;
+        q.push({i,j});
+        while(q.size()){
+            auto t = q.front();
+            q.pop();
+            int x = t.first, y = t.second;
+            for(int i =0; i < 4;i ++){
+                int a = x + dx[i], b = y + dy[i];
+                if(a >=0 && a < n && b >= 0 && b < m && board[a][b] == 'O' && !st[a][b]){
+                    st[a][b] = true;
+                    q.push({a,b});
+                }
+            }
+        }
+    }
+};
+~~~
+
+
 
 ### 并查集
 
